@@ -7,6 +7,14 @@ app.use(express.json());
 
 const businessRoutes = require('./routes/business');
 const entryRoutes = require("./routes/entrys")
+app.get("/", (req, res) => {
+    res.send(`
+        <h1>Welcome to Agro Thresher Services</h1>
+        <p>This is a simple CRUD application for managing agricultural services related to thresher machines.</p>
+        <p><a href="/entries">View Entries</a></p>
+        <p><a href="/business">View Businesses</a></p>
+    `);
+});
 
 app.use('/api/businesses', businessRoutes);
 app.use('/api/entries', entryRoutes);
