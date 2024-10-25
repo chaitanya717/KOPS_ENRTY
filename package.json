@@ -1,0 +1,21 @@
+{
+  "name": "business-crud",
+  "version": "1.0.0",
+  "description": "A Node.js microservice for managing business information with MongoDB Atlas",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": ["nodejs", "express", "mongodb", "mongoose", "crud", "api", "microservice"],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.3.4",  
+    "dotenv": "^16.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
