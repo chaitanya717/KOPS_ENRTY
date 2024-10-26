@@ -13,7 +13,7 @@ const entrySchema = new mongoose.Schema({
     bag: { type: Number, required: true },
     rate: { type: Number, required: true },
     hrcount: { type: Number, required: true },
-    hrname: { type: String, required: true },
+    hrname: [String],
     diesel: { type: Number, required: true },
     total: { type: Number, required: true },
     paymentStatus: paymentStatusSchema
