@@ -10,7 +10,7 @@ const businessSchema = new mongoose.Schema({
   businessName: { type: String, required: true },
   userid: { type: String, required: true },
   businessType: { type: String, required: true },
-  businessOption: [],
+  businessOption: [String],
   HR: [hrSchema],
   Active: { type: Boolean, default: true },
 });
