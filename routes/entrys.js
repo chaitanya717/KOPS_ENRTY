@@ -28,18 +28,29 @@ router.get("/user/:userId", async (req, res) => {
     const { userId } = req.params;
     const limit = parseInt(req.query.limit) || 20; // Default limit to 20 if not provided
     const page = parseInt(req.query.page) || 1; // Default page to 1 if not provided
-
-    // Calculate the number of documents to skip
     const skip = (page - 1) * limit;
 
-    // Find entries by userId, with pagination
-    const entries = await Entry.find({ userid: userId })
+    // Retrieve the date from query parameters, if provided, and parse it
+    const date = req.query.date ? new Date(req.query.date) : null;
+
+    // Build a filter object based on userId and specific date
+    const filter = { userid: userId };
+    if (date) {
+      // Set the filter to match any entries on the specified date (ignoring time)
+      filter.date = {
+        $gte: new Date(date.setUTCHours(0, 0, 0, 0)),
+        $lt: new Date(date.setUTCHours(23, 59, 59, 999))
+      };
+    }
+
+    // Find entries by userId and date with pagination
+    const entries = await Entry.find(filter)
       .limit(limit)
       .skip(skip)
       .exec();
 
-    // Get total count of entries for this userId for frontend to handle pagination
-    const totalEntries = await Entry.countDocuments({ userid: userId });
+    // Get total count of entries for this userId and specific date
+    const totalEntries = await Entry.countDocuments(filter);
 
     res.json({
       entries,
@@ -51,6 +62,7 @@ router.get("/user/:userId", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 // Read a single entry by ID
 router.get("/:id", async (req, res) => {

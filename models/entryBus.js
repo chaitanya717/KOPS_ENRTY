@@ -8,7 +8,7 @@ const paymentStatusSchema = new mongoose.Schema({
 const entrySchema = new mongoose.Schema({
   name: { type: String, required: true },
   userid: { type: String, required: true },
-  date: { type: Date, required: true },
+  date: { type: String, required: true },
   mobile: { type: String, required: true },
   businessOption: { type: String, required: true },
   bag: { type: Number, required: true },
