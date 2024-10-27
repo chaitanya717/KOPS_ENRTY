@@ -30,17 +30,16 @@ router.get("/user/:userId", async (req, res) => {
     const page = parseInt(req.query.page) || 1; // Default page to 1 if not provided
     const skip = (page - 1) * limit;
 
-    // Retrieve the date from query parameters, if provided, and parse it
-    const date = req.query.date ? new Date(req.query.date) : null;
+    // Retrieve the date from query parameters as a string, if provided
+    const dateStr = req.query.date; // e.g., "2024-03-12"
+    
+    // Initialize filter object with userId
+    let filter = { userid: userId };
 
-    // Build a filter object based on userId and specific date
-    const filter = { userid: userId };
-    if (date) {
-      // Set the filter to match any entries on the specified date (ignoring time)
-      filter.date = {
-        $gte: new Date(date.setUTCHours(0, 0, 0, 0)),
-        $lt: new Date(date.setUTCHours(23, 59, 59, 999))
-      };
+    // If a date string is provided, apply equality filter
+    if (dateStr) {
+      // Directly add the date filter as a string comparison
+      filter.date = dateStr; // Assuming date is stored as a string in the format YYYY-MM-DD
     }
 
     // Find entries by userId and date with pagination
@@ -62,6 +61,7 @@ router.get("/user/:userId", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 
 // Read a single entry by ID
