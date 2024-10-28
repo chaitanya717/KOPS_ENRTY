@@ -18,7 +18,7 @@ const entrySchema = new mongoose.Schema({
   rate: { type: Number, required: true },
   hrrate: { type: Number, required: true },
   hrcount: { type: Number, required: true },
-  hrname: [Object],
+  hrname: [String],
   diesel: { type: Number, required: true },
   total: { type: Number, required: true },
   paymentStatus: paymentStatusSchema,
