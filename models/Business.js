@@ -4,6 +4,7 @@ const hrSchema = new mongoose.Schema({
   name: { type: String, required: true },
   mobile: { type: String, required: true },
   Active: { type: Boolean, default: true },
+  rate : { type: String, required: true }
 });
 
 const businessSchema = new mongoose.Schema({
