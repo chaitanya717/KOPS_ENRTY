@@ -13,6 +13,7 @@ const businessSchema = new mongoose.Schema({
   businessType: { type: String, required: true },
   businessOption: [String],
   HR: [hrSchema],
+  DriverPay: { type: String },
   HrRate: { type: Number, required: true },
   Active: { type: Boolean, default: true },
 });
