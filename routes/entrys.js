@@ -23,6 +23,53 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/userhr/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const limit = parseInt(req.query.limit) || 20; // Default limit to 20 if not provided
+    const page = parseInt(req.query.page) || 1; // Default page to 1 if not provided
+    const skip = (page - 1) * limit;
+
+    // Retrieve the startDate and endDate from query parameters as strings, if provided
+    const startDate = req.query.startDate; // e.g., "2024-03-01"
+    const endDate = req.query.endDate; // e.g., "2024-03-12"
+    
+    // Initialize filter object with userId
+    let filter = { userid: userId };
+
+    // If both startDate and endDate are provided, apply range filter
+    if (startDate && endDate) {
+      filter.date = { $gte: startDate, $lte: endDate };
+    } else if (startDate) {
+      // If only startDate is provided, get entries from that date onward
+      filter.date = { $gte: startDate };
+    } else if (endDate) {
+      // If only endDate is provided, get entries up to that date
+      filter.date = { $lte: endDate };
+    }
+
+    // Find entries by userId and date with pagination
+    const entries = await Entry.find(filter)
+      .limit(limit)
+      .skip(skip)
+      .exec();
+
+    // Get total count of entries for this userId and date range
+    const totalEntries = await Entry.countDocuments(filter);
+
+    res.json({
+      entries,
+      totalEntries,
+      currentPage: page,
+      totalPages: Math.ceil(totalEntries / limit),
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
 router.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
